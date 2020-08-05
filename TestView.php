@@ -9,7 +9,7 @@
 		exit;
 	
 	if (!isset($_GET['seq']))
-		exit;
+		header("Location: TestView?seq=0", true, 301);
 	
 	$seq = intval($_GET['seq']);
 ?>
@@ -53,6 +53,9 @@
 		$len_question = ($question->GetQuestion()->num_rows);
 		$get_question = $question->GetQuestionBySeq($seq);
 		
+		if ($seq >= $len_question)
+			echo "Selesai terima kasih";
+		
 		while($row_question = $get_question->fetch_assoc()) {
 	?>
 <div class="panel panel-primary">
@@ -85,6 +88,13 @@
 				</div>
 			 </div>
 			 <?php
+			 if ($seq > 0) {?>
+				<input type="button" value="<< previous question" onclick="goToQuestion(<?=$seq-1?>)"/>
+			 <?php 
+			 } 
+			 ?>
+			 
+			 <?php
 			 if ($seq < $len_question-1) {
 				 ?>
 			 <input type="button" value="next question >>" onclick="goToQuestion(<?=$seq+1?>)"/>
@@ -93,11 +103,6 @@
 			 ?>
 			 
 			 <?php
-			 if ($seq > 0) {?>
-				<input type="button" value="<< previous question" onclick="goToQuestion(<?=$seq-1?>)"/>
-			 <?php 
-			 } 
-			 
 			 if ($seq == $len_question-1) {
 			 ?>
 			 <input type="button" value=">> finish <<" onclick="goToQuestion(<?=$seq+1?>)"/>

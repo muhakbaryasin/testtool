@@ -17,6 +17,7 @@ include "Option.php";
             data: json_string,
             success: function (data) {
                 alert("success");
+				window.location.href = "ViewQuestion";
             },
             failure: function (errMsg) {
                 alert(errMsg);
